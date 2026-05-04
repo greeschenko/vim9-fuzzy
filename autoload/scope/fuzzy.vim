@@ -33,11 +33,13 @@ export def File(findCmd: string = null_string, count: number = 100000, ignore_er
     var menu: popup.FilterMenu
     menu = popup.FilterMenu.new("File", [],
         (res, key) => {
-            if !util.Send2Qickfix(key, menu.items_dict, menu.filtered_items[0], cmd,
+            var selected_list: list<dict<any>> = [res]
+
+            if !util.Send2Qickfix(key, menu.items_dict, selected_list, cmd,
                     (v: dict<any>) => {
                         return {filename: v.text}
                     }) &&
-                    !util.Send2Buflist(key, menu.filtered_items[0]->mapnew('v:val.text'))
+                    !util.Send2Buflist(key, [res.text])
                 util.VisitFile(key, res.text)
             endif
             if options.find_echo_cmd
